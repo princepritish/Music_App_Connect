@@ -1,18 +1,5 @@
 import numpy as np
 
-import tensorflow as tf
-import tensorflow.keras as keras
-from tensorflow.keras import regularizers
-from tensorflow.keras.preprocessing import sequence
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.models import Sequential, Model, model_from_json
-from tensorflow.keras.layers import Dense, Embedding, LSTM
-from tensorflow.keras.layers import Input, Flatten, Dropout, Activation, BatchNormalization
-from tensorflow.keras.layers import Conv1D, MaxPooling1D, AveragePooling1D
-from tensorflow.keras.utils import  to_categorical
-from tensorflow.keras.callbacks import (EarlyStopping, LearningRateScheduler,
-                             ModelCheckpoint, TensorBoard, ReduceLROnPlateau)
 from tensorflow.keras import losses, models, optimizers
 from tensorflow.keras.activations import relu, softmax
 from tensorflow.keras.layers import (Convolution2D, GlobalAveragePooling2D, BatchNormalization, Flatten, Dropout,
