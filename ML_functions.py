@@ -1,5 +1,6 @@
 import numpy as np
 
+import tensorflow as tf
 from tensorflow.keras import losses, models, optimizers
 from tensorflow.keras.activations import relu, softmax
 from tensorflow.keras.layers import (Convolution2D, GlobalAveragePooling2D, BatchNormalization, Flatten, Dropout,
@@ -14,6 +15,12 @@ import pickle
 sampling_rate = 44100
 audio_duration = 2.5
 n_mfcc = 30
+class_mapping = [
+                   'female_angry', 'female_disgust', 'female_fear', 'female_happy',
+                   'female_neutral', 'female_sad', 'female_surprise', 'male_angry',
+                   'male_disgust', 'male_fear', 'male_happy', 'male_neutral',
+                   'male_sad', 'male_surprise'
+                ]
 
 
 def prepare_data(audio_link,n):
@@ -40,7 +47,7 @@ def prepare_data(audio_link,n):
         data = np.pad(data, (offset, int(input_length) - len(data) - offset), "constant")
     MFCC = librosa.feature.mfcc(data , sr = sampling_rate, n_mfcc = n_mfcc)
     MFCC = np.expand_dims(MFCC,axis = -1)
-
+    print(MFCC.shape)
     return MFCC
 
 
@@ -101,9 +108,9 @@ if __name__ == '__main__':
     data = prepare_data(audio_link, n = n_mfcc)
     mean,std = load_mean_std()
     data = (data - mean)/std
-    # model = tf.keras.models.load_model('ml_model/base_model.h5')
-    model = get_2d_conv_model(n_mfcc)
-    model.load_weights('ml_model/base_model.h5')
-    model.predict(data)
+    print(data.shape)
+    model = tf.keras.models.load_model('ml_model/my_model')
+    probs = model.predict(np.expand_dims(data,axis = 0))
+    print(f"Prediction class is {class_mapping[np.argmax(probs)]}")
 
 
