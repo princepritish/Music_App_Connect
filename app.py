@@ -4,6 +4,8 @@ import crud
 from sqlalchemy.orm import Session
 from fastapi import Depends, FastAPI, HTTPException
 from database import engine, SessionLocal
+from ML_functions import *
+
 
 app = FastAPI()
 
@@ -38,3 +40,16 @@ def verify_otp(user: schemas.OtpInfo, db: Session = Depends(get_db)):
 @app.get("/")
 def root():
     return {"Music App": "Welcome to Music App"}
+
+@app.post("/user/get_mood")
+def get_mood(filepath):
+    data = prepare_data(audio_link, n=n_mfcc)
+    mean, std = load_mean_std()
+    data = (data - mean) / std
+    print(data.shape)
+    model = tf.keras.models.load_model('ml_model/my_model')
+    probs = model.predict(np.expand_dims(data, axis=0))
+    print(f"Prediction class is {class_mapping[np.argmax(probs)]}")
+    return {
+        "Class " : class_mapping[np.argmax(probs)]
+    }
