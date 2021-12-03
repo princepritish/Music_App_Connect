@@ -42,7 +42,7 @@ def root():
     return {"Music App": "Welcome to Music App"}
 
 @app.post("/user/get_mood")
-def get_mood(filepath):
+def get_mood(audio_link):
     data = prepare_data(audio_link, n=n_mfcc)
     mean, std = load_mean_std()
     data = (data - mean) / std
