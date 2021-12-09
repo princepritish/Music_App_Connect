@@ -1,6 +1,7 @@
 venv/
 .idea/
 __pycache__/
+my_model/
 Dockerfile
-config.py
-ml_model/
+data.mp3
+.env
